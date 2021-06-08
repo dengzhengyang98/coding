@@ -1,25 +1,23 @@
+"""
+Definition of Interval.
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+"""
+
 class Solution:
-    def coinChange(self, coins, amount):
-        coins.sort(reverse=True)
-        result = []
-        for i in range(len(coins)):
-            self.greedy(coins, amount, i, 0, result)
-        return len(result)
-
-    def greedy(self, coins, amount, index, cur, result):
-        if cur == amount:
-            result
-            return
-
-        if cur > amount:
-            return
-
-        if cur < amount:
-            for j in range(index, len(coins)):
-                cur += coins[j]
-                result.append(coins[j])
-                self.greedy(coins, amount, j, cur, result)
-                cur -= result.pop()
+    """
+    @param airplanes: An interval array
+    @return: Count of airplanes are in the sky.
+    """
+    def countOfAirplanes(self, airplanes):
+        # write your code here
+        count = {i:0 for i in range(0, 24)}
+        for start, end in airplanes:
+            for j in range(start, end):
+                count[j] += 1
+        return max(count.values())
 
 s = Solution()
-print(s.coinChange([2], 3))
+print(s.countOfAirplanes([(1,10),(2,3),(5,8),(4,7)]))
