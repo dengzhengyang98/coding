@@ -1,27 +1,23 @@
 from typing import List
-from collections import deque
+from operator import itemgetter
 
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        indegree = self.get_indegree(numCourses, prerequisites)
-        start_node = [x for x in range(numCourses) if indegree[x] == 0]
-        q = deque(start_node)
-        courses = list(range(numCourses))
-        while q:
-            course = q.popleft()
-            for prerequisite in prerequisites:
-                if course == prerequisite[1]:
-                    indegree[prerequisite[0]] -= 1
-                    if indegree[prerequisite[0]] == 0:
-                        q.append(prerequisite[0])
-            courses.remove(course)
-        if len(courses) == 0:
-            return True
-        else:
-            return False
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        sorted(intervals, key=itemgetter(0))
+        result = [intervals[0]]
+        curr_idx = 0
+        for i in range(1, len(intervals)):
+            start, end = intervals[i][0], intervals[i][1]
+            curr_start, curr_end = result[curr_idx][0], result[curr_idx][1]
+            if start <= curr_end:
+                if end > curr_end:
+                    result[curr_idx] = [curr_start, end]
+                else:
+                    result[curr_idx] = [curr_start, curr_end]
+            else:
+                result.append([start, end])
+                curr_idx += 1
+        return result
 
-    def get_indegree(self, numCourses, prerequisites):
-        indegree = {x:0 for x in range(numCourses)}
-        for prerequisite in prerequisites:
-            indegree[prerequisite[0]] += 1
-        return indegree
+s = Solution()
+print(s.merge([[1,4],[0,4]]))
